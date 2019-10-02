@@ -6,19 +6,19 @@ $podcast_title        = \rwmb_meta(  'fm_podcast_title' ,         array( 'object
 $podcast_description  = \rwmb_meta(  'fm_podcast_description' ,   array( 'object_type' => 'setting', 'limit' => 1 ) , 'fm-sermons' );
 $podcast_image        = \rwmb_meta(  'fm_podcast_artwork' ,       array( 'object_type' => 'setting', 'limit' => 1 ) , 'fm-sermons' );
 
-//$remote_file_size = retrieve_remote_file_size( "https://thesummitatl.s3.amazonaws.com/Podcast+Audio/2016/Common+Unity.mp3" );
-
-
-// $attachment_id = rwmb_meta( 'faithmade_sermon_audio_link', array() , 2657 );
-
-// var_dump( $attachment_id );
-// wp_die();
 /**
-Template Name: Podcast RSS
-**/
+ * Template Name: Podcast RSS
+ **/
 
-// Query the Podcast Custom Post Type and fetch the latest 100 posts
-$args = array( 'post_type' => 'sermons', 'posts_per_page' => 100 );
+// Query the Sermons CPT and fetch the latest 100 posts order by faithmade_date_preached postmeta (latest first)
+$args = array(
+				'post_type' 		=> 'sermons',
+				'posts_per_page' 	=> 100,
+				'orderby'			=> 'meta_value',
+				'meta_key'			=> 'faithmade_date_preached',
+				'order'				=> 'DESC',
+			);
+
 $loop = new \WP_Query( $args );
 
 // Output the XML header
@@ -53,7 +53,7 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>';
 		<itunes:explicit>false</itunes:explicit>
 <?php
 
-	// Start the loop for Podcast posts
+	// Start the loop for Faithmade posts
 	while ( $loop->have_posts() ) : $loop->the_post();
 
 		$post_id = get_the_ID();

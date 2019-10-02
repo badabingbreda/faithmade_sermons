@@ -3,7 +3,7 @@
  * Plugin Name: Faithmade Sermons
  * Plugin URI: https://faithmade.com
  * Description: Faithmade Sermons adds sermon capability to your Faithmade Website.
- * Version: 1.0
+ * Version: 1.1
  * Author: Andrew Peters
  * Author URI: https://faithmade.com
  */
