@@ -7,10 +7,14 @@
  * Author: Andrew Peters
  * Author URI: https://faithmade.com
  */
- 
- 
+
+
+define( 'FM_SERMONS_PATH' , dirname( __FILE__ ) . '/' );
+
+include_once( 'sermons_rss.php' );
+
  //Add Sermon Custom Post Type
- 
+
  function faithmade_sermon_posts() {
 
 	$args = array (
@@ -291,6 +295,25 @@ function faithmade_sermon_fields( $meta_boxes ) {
 					'relation' => 'or',
 				),
 			),
+			array(
+			    'name' => 'Audio duration in seconds',
+			    'id'   => 'faithmade_sermon_audio_duration',
+			    'type' => 'number',
+			    'placeholder' => 'Audio duration of in seconds',
+			    'min'  => 0,
+			    // 'max'  => 999,
+			    'step' => 1,
+				'visible' => array(
+					'when' => array(
+						array (
+							0 => 'faithmade_content_types_checkbox',
+							1 => 'contains',
+							2 => 'Audio URL',
+						),
+					),
+					'relation' => 'or',
+				),
+			),
 			array (
 				'id' => $prefix . 'faithmade_sermon_audio_embed',
 				'type' => 'textarea',
@@ -305,6 +328,18 @@ function faithmade_sermon_fields( $meta_boxes ) {
 					),
 					'relation' => 'or',
 				),
+			),
+			array(
+			    'id'   => 'faithmade_audio_filesize',
+			    'type' => 'hidden',
+			    // Hidden field must have predefined value
+			    'std'  => 0,
+			),
+			array(
+			    'id'   => 'faithmade_audio_mimetype',
+			    'type' => 'hidden',
+			    // Hidden field must have predefined value
+			    'std'  => 0,
 			),
 			array (
 				'id' => $prefix . 'heading_cw8zwxszl1v_1nizqghq412',
@@ -420,7 +455,7 @@ function faithmade_podcast_fields( $meta_boxes ) {
 			),
 			array (
 				'id' => $prefix . 'fm_podcast_artwork',
-				'type' => 'image',
+				'type' => 'image_upload',
 				'name' => esc_html__( 'Podcast Artwork', 'text-domain' ),
 				'max_file_uploads' => 1,
 				'label_description' => esc_html__( 'At least 1600x1600 pixels.', 'text-domain' ),
